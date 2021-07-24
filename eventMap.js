@@ -1,7 +1,13 @@
-function setMarkers(layerGroup, eventData) {
+function setMarkers(layerGroup, eventData, eventName) {
     eventData.forEach(function (datum) {
+        popupHTML = `
+        <a ID='hyp' href='https://chiayucam.github.io/Onsite_EEW_with_LSTM.js/recordViewer.html?record=${eventName}${datum[2]}', style='font-size: 14px', Target='_blank'>
+            ${datum[2]}
+        </a>
+        <p>PGA: ${datum[3]}</p>
+        `;
         marker = L.marker([datum[0], datum[1]]);
-        marker.bindPopup("<a ID='hyp' href='http://www.abcsite/?param1=anyjavacriptvariable' Target='_blank'>"+datum[2]+"</a>");
+        marker.bindPopup(popupHTML);
         layerGroup.addLayer(marker);
     })
 }
@@ -32,7 +38,7 @@ let src;
 eventNames.forEach(function (eventName) {
     src = `https://chiayucam.github.io/Onsite_EEW_with_LSTM.js/event_data/${eventName}.json`;
     layerGroup[eventName] = L.layerGroup().addTo(map);
-    fetchJson(src).then(eventData => setMarkers(layerGroup[eventName], eventData));
+    fetchJson(src).then(eventData => setMarkers(layerGroup[eventName], eventData, eventName));
 });
 
 
