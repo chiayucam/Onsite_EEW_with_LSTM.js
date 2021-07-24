@@ -1,10 +1,12 @@
 function setMarkers(layerGroup, eventData, eventName) {
     eventData.forEach(function (datum) {
         popupHTML = `
-        <a ID='hyp' href='https://chiayucam.github.io/Onsite_EEW_with_LSTM.js/recordViewer.html?record=${eventName}${datum[2]}', style='font-size: 14px', Target='_blank'>
-            ${datum[2]}
-        </a>
-        <p>PGA: ${datum[3]}</p>
+        <p>
+            <a ID='hyp' href='https://chiayucam.github.io/Onsite_EEW_with_LSTM.js/waveformViewer.html?record=${eventName}${datum[2]}', style='font-size: 14px', Target='_blank'>
+                ${datum[2]}
+            </a>
+            PGA: ${datum[3]}
+        </p>
         `;
         marker = L.marker([datum[0], datum[1]]);
         marker.bindPopup(popupHTML);
