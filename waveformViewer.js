@@ -104,7 +104,7 @@ function plotWaveform(waveformData) {
 
 // read json
 async function fetchJson() {
-    const src = `/json/${getRecordName()}.json`
+    const src = `json/${getRecordName()}.json`
     const response = await fetch(src);
     return await response.json();
 };
