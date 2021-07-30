@@ -1,10 +1,10 @@
 function setMarkers(layerGroup, eventData, eventName) {
     eventData.forEach(function (datum) {
         popupHTML = `
-        <p>
-            <a ID='hyp' href='https://chiayucam.github.io/Onsite_EEW_with_LSTM.js/waveformViewer.html?record=${eventName}${datum[2]}', style='font-size: 14px', Target='_blank'>
+        <p style="text-align:center;">
+            <a href='waveformViewer.html?record=${eventName}${datum[2]}', style='font-size: 14px', Target='_blank'>
                 ${datum[2]}
-            </a>
+            </a><br>
             PGA: ${datum[3]}
         </p>
         `;
@@ -38,7 +38,7 @@ let layerGroup = [];
 let src;
 
 eventNames.forEach(function (eventName) {
-    src = `https://chiayucam.github.io/Onsite_EEW_with_LSTM.js/event_data/${eventName}.json`;
+    src = `event_data/${eventName}.json`;
     layerGroup[eventName] = L.layerGroup().addTo(map);
     fetchJson(src).then(eventData => setMarkers(layerGroup[eventName], eventData, eventName));
 });
