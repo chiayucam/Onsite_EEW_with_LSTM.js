@@ -11,21 +11,21 @@ function plotWaveform(waveformData) {
     let waveformName = Object.keys(waveformData);
     d3.select("#selectButton")
         .selectAll("myOptions")
-            .data(waveformName)
+        .data(waveformName)
         .enter()
-            .append("option")
-        .text(function(d) {return d;})
-        .attr("value", function(d) {return d;});
+        .append("option")
+        .text(function (d) { return d; })
+        .attr("value", function (d) { return d; });
 
     // Set geometry
     let margin = { top: 10, right: 30, bottom: 30, left: 60 },
-        width = 800 - margin.left - margin.right,
+        width = 700 - margin.left - margin.right,
         height = 300 - margin.top - margin.bottom;
 
     let svg = d3.select("#waveformGraph")
         .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
         .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
@@ -44,7 +44,7 @@ function plotWaveform(waveformData) {
         return d3.max(waveformData.map(Math.abs));
     };
 
-    let yLim = Math.ceil(absMax(waveformData[waveformName[0]])*1.1);
+    let yLim = Math.ceil(absMax(waveformData[waveformName[0]]) * 1.1);
     let yScale = d3.scaleLinear()
         .domain([-yLim, yLim])
         .range([height, 0]);
@@ -74,7 +74,7 @@ function plotWaveform(waveformData) {
 
     // Update Chart
     function update(selectedComp) {
-        let yLim = Math.ceil(absMax(waveformData[selectedComp])*1.1);
+        let yLim = Math.ceil(absMax(waveformData[selectedComp]) * 1.1);
         let yScale = d3.scaleLinear()
             .domain([-yLim, yLim])
             .range([height, 0]);
@@ -93,10 +93,10 @@ function plotWaveform(waveformData) {
             .duration(1000)
             .attr("class", "line")
             .attr("d", lineGenerator);
-        
+
     }
 
-    d3.select("#selectButton").on("change", function(d) {
+    d3.select("#selectButton").on("change", function (d) {
         let selectedComp = d3.select(this).property("value");
         update(selectedComp);
     });
@@ -111,5 +111,12 @@ async function fetchJson() {
     const response = await fetch(src);
     return await response.json();
 };
+
+// set label
+let recordName = getRecordName(),
+    eventName = recordName.substring(0, 14)
+    stationName = recordName.substring(14)
+
+d3.select("#selectButtonLabel").text(`Viewing waveform at station ${stationName} from earthquake event ${eventName}`)
 
 fetchJson().then(waveformData => { plotWaveform(waveformData) });
