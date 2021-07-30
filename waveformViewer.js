@@ -44,7 +44,7 @@ function plotWaveform(waveformData) {
         return d3.max(waveformData.map(Math.abs));
     };
 
-    let yLim = Math.ceil(absMax(waveformData[waveformName[0]]) * 1.2);
+    let yLim = Math.ceil(absMax(waveformData[waveformName[0]])*1.1);
     let yScale = d3.scaleLinear()
         .domain([-yLim, yLim])
         .range([height, 0]);
@@ -74,16 +74,7 @@ function plotWaveform(waveformData) {
 
     // Update Chart
     function update(selectedComp) {
-        let xyData = formatData(waveformData[selectedComp]);
-        
-        line
-            .datum(xyData)
-            .transition()
-            .duration(1000)
-            .attr("class", "line")
-            .attr("d", lineGenerator);
-        
-        let yLim = Math.ceil(absMax(waveformData[selectedComp]) * 1.2);
+        let yLim = Math.ceil(absMax(waveformData[selectedComp])*1.1);
         let yScale = d3.scaleLinear()
             .domain([-yLim, yLim])
             .range([height, 0]);
@@ -91,6 +82,18 @@ function plotWaveform(waveformData) {
             .transition()
             .duration(1000)
             .call(d3.axisLeft(yScale))
+
+        let lineGenerator = d3.line()
+            .x(function (d) { return xScale(d.x); })
+            .y(function (d) { return yScale(d.y); });
+        let xyData = formatData(waveformData[selectedComp]);
+        line
+            .datum(xyData)
+            .transition()
+            .duration(1000)
+            .attr("class", "line")
+            .attr("d", lineGenerator);
+        
     }
 
     d3.select("#selectButton").on("change", function(d) {
