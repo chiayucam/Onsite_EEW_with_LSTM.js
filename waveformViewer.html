@@ -8,20 +8,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Onsite EEW with LSTM Waveform Viewer</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script>src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.8.0/dist/tf.min.js"</script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.8.0/dist/tf.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="waveformViewer.css">
 </head>
 
 <body>
+    <div id="header">
+        <h1>Onsite Earthquake Early Warning with a Tensorflow LSTM model</h1>
+    </div>
     <div id="waveformViz">
         <h2>Waveform Viewer</h2>
         <label id=selectButtonLabel1 for="selectButton">Viewing waveform of</label>
         <select id="selectButton"></select>
         <label id=selectButtonLabel2 for="selectButton"></label>
         <div id="waveformGraph"></div>
+    </div>
+    <div id="tfViz">
+        <h2>EEW Prediction</h2>
+        <p id="tfStatus">Loading Tensorflow.js</p>
     </div>
     <script src="waveformViewer.js"></script>
 </body>
