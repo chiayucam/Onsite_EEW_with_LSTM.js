@@ -18,7 +18,7 @@ function plotWaveform(waveformData) {
         .attr("value", function (d) { return d; });
 
     // Set geometry
-    let margin = { top: 10, right: 30, bottom: 40, left: 60 },
+    let margin = { top: 30, right: 60, bottom: 40, left: 60 },
         width = 700 - margin.left - margin.right,
         height = 300 - margin.top - margin.bottom;
 
@@ -42,7 +42,7 @@ function plotWaveform(waveformData) {
     xTitle = svg.append("text")
         .attr("text-anchor", "end")
         .attr("x", width / 2 + margin.right)
-        .attr("y", height + margin.top + 25)
+        .attr("y", height + margin.top + 5)
         .attr("font-size", "14px")
         .text("Time (sec)");
 
@@ -59,10 +59,10 @@ function plotWaveform(waveformData) {
         .call(d3.axisLeft(yScale));
 
     yTitle = svg.append("text")
-        .attr("text-anchor", "end")
+        .attr("text-anchor", "middle")
         .attr("transform", "rotate(-90)")
-        .attr("x", -height / 2 + margin.bottom + 10)
-        .attr("y", -margin.left + 20)
+        .attr("x", -height / 2 - margin.top +margin.bottom)
+        .attr("y", -margin.left + 25)
         .attr("font-size", "14px")
         .text("Acceleration (cm/s^2)");
 
@@ -149,5 +149,5 @@ fetchJson().then(waveformData => { plotWaveform(waveformData) });
 
 
 // load tf model
-// const model = tf.loadLayersModel('L5U2B512Onadam/model.json');
-// console.log(model)
+const model = tf.loadLayersModel('L5U2B512Onadam/model.json');
+d3.select("#tfStatus").text(`Tensorflow.js loaded --version: ${tf.version.tfjs}`)
