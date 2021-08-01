@@ -19,6 +19,16 @@ async function fetchJson(src) {
     return await response.json();
 }
 
+function formatEventName(eventName) {
+    year = eventName.substring(0, 4)
+    month = eventName.substring(4, 6)
+    date = eventName.substring(6, 8)
+    hour = eventName.substring(8, 10)
+    minute = eventName.substring(10, 12)
+    second = eventName.substring(12, 14)
+    return `${year}/${month}/${date} ${hour}:${minute}:${second}`
+}
+
 // load leaflet map
 let map = L.map('mapid');
 
@@ -28,25 +38,22 @@ let osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 let osm = new L.TileLayer(osmUrl, { minZoom: 5, maxZoom: 16 });
 map.addLayer(osm);
 
-// fetch event list
+// fetch event list json then feed event json data
+let src = "event_data/event_list.json"
+fetchJson(src).then(eventList => drawMap(eventList))
 
 
+function drawMap(eventList) {
+    let eventNames = Object.keys(eventList);
+    let baseMaps = {};
+    let layerGroup = [];
+    eventNames.forEach(function (eventName) {
+        src = `event_data/${eventName}.json`;
+        layerGroup[eventName] = L.layerGroup().addTo(map);
+        fetchJson(src).then(eventData => setMarkers(layerGroup[eventName], eventData, eventName));
 
-// fetch event json data
-let eventNames = ["20160205195727", "20180206155042"];
-let layerGroup = [];
-let src;
+        baseMaps[formatEventName(eventName)] = layerGroup[eventName]
+    });
 
-eventNames.forEach(function (eventName) {
-    src = `event_data/${eventName}.json`;
-    layerGroup[eventName] = L.layerGroup().addTo(map);
-    fetchJson(src).then(eventData => setMarkers(layerGroup[eventName], eventData, eventName));
-});
-
-
-let baseMaps = {
-    "2016/02/05 19:57:27": layerGroup[eventNames[0]],
-    "2018/02/06 15:50:42": layerGroup[eventNames[1]]
-}
-
-L.control.layers(baseMaps).addTo(map)
+    L.control.layers(baseMaps).addTo(map)
+};
