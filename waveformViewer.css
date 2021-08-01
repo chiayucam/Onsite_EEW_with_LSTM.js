@@ -1,7 +1,12 @@
+body {
+    font-family: 'Lato', sans-serif;
+}
+
 #waveformViz {
     max-width: 1000px;
     width: 70%;
     margin-left: 25%;
+    margin-top: 5%;
     text-align: center;
     justify-content: center;
 }
@@ -12,19 +17,30 @@
     align-items: center;
 }
 
+#tfViz {
+    margin-top: 5%;
+    text-align: center;
+}
+
+#tfStatus {
+    font-size: 20px;
+}
+
+#header {
+    text-align: center;
+}
+
 h2 {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 400;
+    font-size: 26px;
 }
 
 label {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 300;
+    font-size: 20px;
 }
 
 select {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 300;
+    font-family: 'Lato', sans-serif;
+    font-size: 20px;
 }
 
 .line {
