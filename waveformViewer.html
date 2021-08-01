@@ -2,26 +2,25 @@
 <html lang="en">
 
 <head>
+    <meta name="author" content="chiayucam">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        .line {
-            fill: none;
-            stroke: #ffab00;
-            stroke-width: 1.5;
-        }
-    </style>
     <title>Onsite EEW with LSTM Waveform Viewer</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script>src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"</script>
+    <script>src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.8.0/dist/tf.min.js"</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="waveformViewer.css">
 </head>
 
 <body>
-    <h1>Waveform Viewer</h1>
     <div id="waveformViz">
-        <label id=selectButtonLabel for="selectButton"></label>
+        <h2>Waveform Viewer</h2>
+        <label id=selectButtonLabel1 for="selectButton">Viewing waveform of</label>
         <select id="selectButton"></select>
+        <label id=selectButtonLabel2 for="selectButton"></label>
         <div id="waveformGraph"></div>
     </div>
     <script src="waveformViewer.js"></script>
