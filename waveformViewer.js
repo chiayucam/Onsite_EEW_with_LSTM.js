@@ -8,17 +8,17 @@ function getRecordName() {
 
 function plotWaveform(waveformData) {
     // Select button
-    let waveformName = Object.keys(waveformData);
+    let waveformNames = Object.keys(waveformData);
     d3.select("#selectButton")
         .selectAll("myOptions")
-        .data(waveformName)
+        .data(waveformNames)
         .enter()
         .append("option")
         .text(function (d) { return d; })
         .attr("value", function (d) { return d; });
 
     // Set geometry
-    let margin = { top: 10, right: 30, bottom: 30, left: 60 },
+    let margin = { top: 10, right: 30, bottom: 40, left: 60 },
         width = 700 - margin.left - margin.right,
         height = 300 - margin.top - margin.bottom;
 
@@ -31,7 +31,7 @@ function plotWaveform(waveformData) {
             "translate(" + margin.left + "," + margin.top + ")");
 
     // Add x axis
-    let waveformLength = waveformData[waveformName[0]].length
+    let waveformLength = waveformData[waveformNames[0]].length
     let xScale = d3.scaleLinear()
         .domain([0, (waveformLength - 1) / 100])
         .range([0, width]);
@@ -39,17 +39,32 @@ function plotWaveform(waveformData) {
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(xScale));
 
+    xTitle = svg.append("text")
+        .attr("text-anchor", "end")
+        .attr("x", width / 2 + margin.right)
+        .attr("y", height + margin.top + 25)
+        .attr("font-size", "14px")
+        .text("Time (sec)");
+
     // Add y axis
     function absMax(waveformData) {
         return d3.max(waveformData.map(Math.abs));
     };
 
-    let yLim = Math.ceil(absMax(waveformData[waveformName[0]]) * 1.1);
+    let yLim = Math.ceil(absMax(waveformData[waveformNames[0]]) * 1.1);
     let yScale = d3.scaleLinear()
         .domain([-yLim, yLim])
         .range([height, 0]);
     yAxis = svg.append("g")
         .call(d3.axisLeft(yScale));
+
+    yTitle = svg.append("text")
+        .attr("text-anchor", "end")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2 + margin.bottom + 10)
+        .attr("y", -margin.left + 20)
+        .attr("font-size", "14px")
+        .text("Acceleration (cm/s^2)");
 
     // Plot line
     function formatData(yData) {
@@ -66,7 +81,7 @@ function plotWaveform(waveformData) {
         .x(function (d) { return xScale(d.x); })
         .y(function (d) { return yScale(d.y); });
 
-    let xyData = formatData(waveformData[waveformName[0]]);
+    let xyData = formatData(waveformData[waveformNames[0]]);
     let line = svg.append("path")
         .datum(xyData)
         .attr("class", "line")
@@ -80,8 +95,19 @@ function plotWaveform(waveformData) {
             .range([height, 0]);
         yAxis
             .transition()
-            .duration(1000)
+            .duration(500)
             .call(d3.axisLeft(yScale))
+
+        let yTitleText;
+        const waveformNamesAcc = waveformNames.slice(0, 3);
+        if (waveformNamesAcc.includes(selectedComp)) {
+            yTitleText = "Acceleration (cm/s^2)"
+        } else {
+            yTitleText = "Velocity (cm/s)"
+        }
+        
+        yTitle
+            .text(yTitleText)
 
         let lineGenerator = d3.line()
             .x(function (d) { return xScale(d.x); })
@@ -90,7 +116,7 @@ function plotWaveform(waveformData) {
         line
             .datum(xyData)
             .transition()
-            .duration(1000)
+            .duration(500)
             .attr("class", "line")
             .attr("d", lineGenerator);
 
@@ -115,8 +141,13 @@ async function fetchJson() {
 // set label
 let recordName = getRecordName(),
     eventName = recordName.substring(0, 14)
-    stationName = recordName.substring(14)
+stationName = recordName.substring(14)
 
-d3.select("#selectButtonLabel").text(`Viewing waveform at station ${stationName} from earthquake event ${eventName}`)
+d3.select("#selectButtonLabel2").text(`component at station ${stationName} from earthquake event ${eventName}`)
 
 fetchJson().then(waveformData => { plotWaveform(waveformData) });
+
+
+// load tf model
+// const model = tf.loadLayersModel('L5U2B512Onadam/model.json');
+// console.log(model)
