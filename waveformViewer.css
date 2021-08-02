@@ -1,29 +1,29 @@
 body {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Open Sans', sans-serif;
 }
 
 #waveformViz {
-    max-width: 1000px;
+    /* max-width: 1000px;
     width: 70%;
-    margin-left: 25%;
+    margin-left: 25%; */
     margin-top: 5%;
     text-align: center;
-    justify-content: center;
+    /* justify-content: center; */
 }
 
 #waveformGraph {
+    max-width: 70%;
+    /* width: 80%; */
+    margin-top: 2%;
+    margin-left: 15%;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    /* justify-content: center;
+    align-items: center; */
 }
 
 #tfViz {
     margin-top: 5%;
     text-align: center;
-}
-
-#tfStatus {
-    font-size: 20px;
 }
 
 #header {
@@ -39,7 +39,7 @@ label {
 }
 
 select {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 20px;
 }
 
@@ -47,4 +47,16 @@ select {
     fill: none;
     stroke: steelblue;
     stroke-width: 1.5;
+}
+
+.container {
+    width: 95%;
+    overflow: hidden;
+    /* background: skyblue; */
+    margin: 20px auto;
+    padding: 20px
+}
+
+.commanText {
+    font-size: 20px;
 }
