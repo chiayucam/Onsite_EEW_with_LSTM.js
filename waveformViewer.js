@@ -5,6 +5,11 @@ function getRecordName() {
     return recordName;
 };
 
+async function fetchJson(recordName) {
+    const src = `json/${recordName}.json`
+    const response = await fetch(src);
+    return await response.json();
+};
 
 function plotWaveform(waveformData) {
     // Select button
@@ -41,7 +46,7 @@ function plotWaveform(waveformData) {
 
     xTitle = svg.append("text")
         .attr("text-anchor", "end")
-        .attr("x", width / 2 + margin.right)
+        .attr("x", (width + margin.right) / 2)
         .attr("y", height + margin.top + 5)
         .attr("font-size", "14px")
         .text("Time (sec)");
@@ -61,7 +66,7 @@ function plotWaveform(waveformData) {
     yTitle = svg.append("text")
         .attr("text-anchor", "middle")
         .attr("transform", "rotate(-90)")
-        .attr("x", -height / 2 - margin.top +margin.bottom)
+        .attr("x", -height / 2 - margin.top + margin.bottom)
         .attr("y", -margin.left + 25)
         .attr("font-size", "14px")
         .text("Acceleration (cm/s^2)");
@@ -105,7 +110,7 @@ function plotWaveform(waveformData) {
         } else {
             yTitleText = "Velocity (cm/s)"
         }
-        
+
         yTitle
             .text(yTitleText)
 
@@ -129,25 +134,35 @@ function plotWaveform(waveformData) {
 };
 
 
+async function main() {
+    // set label tag
+    const recordName = getRecordName();
+    eventName = recordName.substring(0, 14);
+    stationName = recordName.substring(14);
+    d3.select("#selectButtonLabel2").text(`component at station ${stationName} from earthquake event ${eventName}`);
 
-
-// read json
-async function fetchJson() {
-    const src = `json/${getRecordName()}.json`
-    const response = await fetch(src);
-    return await response.json();
-};
-
-// set label
-let recordName = getRecordName(),
-    eventName = recordName.substring(0, 14)
-stationName = recordName.substring(14)
-
-d3.select("#selectButtonLabel2").text(`component at station ${stationName} from earthquake event ${eventName}`)
-
-fetchJson().then(waveformData => { plotWaveform(waveformData) });
-
+    // get waveform data from json file and plot graph
+    const waveformData = await fetchJson(recordName);
+    plotWaveform(waveformData);
+    
+    // test load model then call webworker to format input data and predict
+    await testLoadModel();
+    const tfworker = new Worker("tfWorker.js")
+    tfworker.postMessage(waveformData)
+    console.log('Main: Message posted to worker');
+}
 
 // load tf model
-const model = tf.loadLayersModel('L5U2B512Onadam/model.json');
-d3.select("#tfStatus").text(`Tensorflow.js loaded --version: ${tf.version.tfjs}`)
+async function testLoadModel() {
+    const model = await tf.loadLayersModel('L5U2B512Onadam/model.json');
+    d3.select("#tfStatus").text(`Tensorflow.js loaded --version: ${tf.version.tfjs}`)
+    d3.select("#tfBackend").text(`Using ${tf.getBackend()} backend`)
+    return model;
+};
+
+
+// function logStatus(message) {
+
+// }
+
+main()
