@@ -28,11 +28,15 @@
             <label id=selectButtonLabel2 for="selectButton"></label>
             <div id="waveformGraph"></div>
         </div>
-        <div id="tfViz">
+        <div id="predictViz">
             <h2>EEW Prediction</h2>
+            <div id="legends" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                <!-- <span></span> -->
+            </div>
+            <div id="predictGraph"></div>
+            <button id="runTfButton" class="commanText">Run TF</button>
             <p id="tfStatus" class="commanText"></p>
             <p id="tfBackend" class="commanText"></p>
-            <button id="runTfButton" class="commanText">Run TF</button>
         </div>
     </div>
     <script src="waveformViewer.js"></script>
