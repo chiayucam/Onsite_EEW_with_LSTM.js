@@ -17,26 +17,28 @@
 </head>
 
 <body>
-    <div id="header">
-        <h1>Onsite Earthquake Early Warning with a Tensorflow LSTM model</h1>
-    </div>
-    <div class="container">
-        <div id="waveformViz">
-            <h2>Waveform Viewer</h2>
-            <label id=selectButtonLabel1 for="selectButton">Viewing waveform of</label>
-            <select id="selectButton"></select>
-            <label id=selectButtonLabel2 for="selectButton"></label>
-            <div id="waveformGraph"></div>
+    <div class="wrapper">
+        <div id="header">
+            <h1>Onsite Earthquake Early Warning with a Tensorflow LSTM model</h1>
         </div>
-        <div id="predictViz">
-            <h2>EEW Prediction</h2>
-            <div id="legends" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
-                <!-- <span></span> -->
+        <div id="body">
+            <div id="waveformViz">
+                <h2>Waveform Viewer</h2>
+                <label id=selectButtonLabel1 for="selectButton">Viewing waveform of</label>
+                <select id="selectButton"></select>
+                <label id=selectButtonLabel2 for="selectButton"></label>
+                <div id="waveformGraph"></div>
             </div>
-            <div id="predictGraph"></div>
-            <button id="runTfButton" class="commanText">Run TF</button>
-            <p id="tfStatus" class="commanText"></p>
-            <p id="tfBackend" class="commanText"></p>
+            <div id="predictViz">
+                <h2>EEW Prediction</h2>
+                <div id="legends" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                    <!-- <span></span> -->
+                </div>
+                <div id="predictGraph"></div>
+                <button id="runTfButton" class="commanText">Run TF</button>
+                <p id="tfStatus" class="commanText"></p>
+                <p id="tfBackend" class="commanText"></p>
+            </div>
         </div>
     </div>
     <script src="waveformViewer.js"></script>
