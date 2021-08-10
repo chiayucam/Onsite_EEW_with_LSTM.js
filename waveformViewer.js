@@ -19,7 +19,7 @@ async function testLoadModel() {
     return model;
 };
 
-function addCheckbox(lineClass, labelText) {
+function addLegend(lineClass, labelText) {
     const span = d3.select("#legends")
     const color = d3.select(lineClass).style("stroke")
     span.append("div")
@@ -245,8 +245,8 @@ function plotPredictBackground(waveformData) {
             .attr("d", lineGenerator);
     }
 
-    // add waveform background checkbox
-    addCheckbox(".waveformBackgroundLine", "Z, N, E Waveforms");
+    // add waveform background legend
+    addLegend(".waveformBackgroundLine", "Z, N, E Waveforms");
 
     // plot rect box for prediction line
     svg.append("rect")
@@ -266,7 +266,7 @@ function plotPredictBackground(waveformData) {
             .attr("class", "waveformExceedLine")
             .attr("d", lineGenerator);
 
-        addCheckbox(".waveformExceedLine", "Acc > 80 Gal Time");
+        addLegend(".waveformExceedLine", "Acc > 80 Gal Time");
     }
 };
 
@@ -307,7 +307,7 @@ function plotPredict(predict) {
         .attr("class", "predictLine")
         .attr("d", lineGenerator);
 
-    addCheckbox(".predictLine", "Prediction Probability")
+    addLegend(".predictLine", "Prediction Probability")
 
     let focus = svg.append("circle")
         .style("fill", "none")
@@ -398,7 +398,7 @@ function plotPredict(predict) {
                 .x(function (d) { return xScale(d.x) })
                 .y(function (d) { return d.y }));
 
-        addCheckbox(".predictExceedLine", "Probability > 0.5 Time")
+        addLegend(".predictExceedLine", "Probability > 0.5 Time")
     };
 };
 
@@ -429,12 +429,6 @@ async function main() {
     })
 }
 
-
-function updateCheckbox() {
-    d3.selectAll(".checkbox").each(function (d) {
-
-    })
-}
 
 
 
