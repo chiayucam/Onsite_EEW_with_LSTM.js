@@ -23,15 +23,6 @@ async function loadModel() {
     return model;
 };
 
-async function runTf() {
-    const recordName = getRecordName();
-    const waveformData = await fetchJson(recordName);
-    const input = formatInput(waveformData)
-    const model = await loadModel();
-    const output = await model.predict(input)
-    console.log(output.array())
-}
-
 
 onmessage = (async function(e) {
     const input = formatInput(e.data)
@@ -40,5 +31,6 @@ onmessage = (async function(e) {
     const startTime = performance.now();
     const output =  await model.predict(input)
     const totalTime = performance.now() - startTime;
-    console.log(output.array(), totalTime)
+    output.reshape([6001]).array().then(predict => postMessage(predict))
+    console.log('Worker: Posting message back to main script');
 })
