@@ -287,7 +287,27 @@ function plotPredict(predict) {
 
     let svg = d3.select("#predictGraph").select("svg").select("g")
 
+    // plot first occurrence of Prob > 0.5 line
+    let margin = { top: 30, right: 60, bottom: 40, left: 60 }
+    width = 700 - margin.left - margin.right;
+    height = 400 - margin.top - margin.bottom;
+
+    const firstExceededTime = getFirstExceededTime([predict], (n => n > 0.5))
+    if (firstExceededTime !== -1) {
+        svg.append("path")
+            .datum([{ x: firstExceededTime, y: height }, { x: firstExceededTime, y: 0 }])
+            .attr("class", "predictExceedLine")
+            .attr("d", d3.line()
+                .x(function (d) { return xScale(d.x) })
+                .y(function (d) { return d.y }));
+
+        addLegend(".predictExceedLine", "Probability > 0.5 Time")
+    };
+
     // Plot line
+    width = rect.attr("width");
+    height = rect.attr("height");
+
     function formatData(yData) {
         let xData = d3.ticks(0, (yData.length - 1) / 100, yData.length);
         let xyData = [];
@@ -384,22 +404,7 @@ function plotPredict(predict) {
         focusTextBackground.style("opacity", 0)
     }
 
-    // plot first occurrence of Prob > 0.5 line
-    let margin = { top: 30, right: 60, bottom: 40, left: 60 }
-    width = 700 - margin.left - margin.right;
-    height = 400 - margin.top - margin.bottom;
-
-    const firstExceededTime = getFirstExceededTime([predict], (n => n > 0.5))
-    if (firstExceededTime !== -1) {
-        svg.append("path")
-            .datum([{ x: firstExceededTime, y: height }, { x: firstExceededTime, y: 0 }])
-            .attr("class", "predictExceedLine")
-            .attr("d", d3.line()
-                .x(function (d) { return xScale(d.x) })
-                .y(function (d) { return d.y }));
-
-        addLegend(".predictExceedLine", "Probability > 0.5 Time")
-    };
+    
 };
 
 async function main() {
